@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+
+				<h4 class="card-title">
+					<a class="btn btn-primary"
+						th:href="@{'/cuenta/form/' + ${cliente.id}}"
+						th:text="'Crear cuenta'"></a>
+				</h4>
+				
+	
+		
+				<ul class="list-group">
+					<li class="list-group-item active" th:text="'Nro Identificacion: '+${cliente.nroIdentificacion}"></li>
+					<li class="list-group-item" th:text="'Apellidos: '+${cliente.apellidos}"></li>
+					<li class="list-group-item" th:text="'Nombres: '+${cliente.nombres}"></li>
+					<li class="list-group-item" th:text="'Email: '+${cliente.email}"></li>
+					<li class="list-group-item" th:text="'Fecha nacimiento: '+${#calendars.format(cliente.fechaNacimiento,'dd/MM/yyyy')}"></li>
+					<li class="list-group-item" th:text="'Fecha creacion: '+${#calendars.format(cliente.fechaCreacion,'dd/MM/yyyy')}"></li>
+
+				</ul>
+
+				
+				<table th:if="${not #lists.isEmpty(cliente.cuentas)}"
+					class="table table-bordered table-striped my-4">
+					<thead class="thead-dark">
+						<tr>
+							<th>ID</th>
+							<th>Cuenta</th>
+							<th>Tipo cuenta</th>
+							<th>Apertura</th>
+							<th>Estado</th>
+							<th>Saldo</th>
+							<th>Ver</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="cuenta: ${cliente.cuentas}">
+							<td th:text="${cuenta.id}"></td>
+							<td th:text="${cuenta.numeroCuenta}"></td>
+							<td th:text="${cuenta.tipoCuenta.nombre}"></td>
+							<td th:text="${#calendars.format(cuenta.fechaApertura,'dd/MM/yyyy HH:mm:ss')}"></td>
+							<td th:text="${cuenta.estadoCuenta.nombre}"></td>
+							<td th:text="'$'+${cuenta.saldo}"></td>
+							<td><a class="btn btn-primary btn-sm" th:href="@{'/cuenta/ver/' + ${cuenta.id}}" th:text="'Detalle'"></a></td>
+							<td><a class="btn btn-warning btn-sm" th:href="@{'/cuenta/editar/' + ${cuenta.id}}" th:text="'Editar'"></a></td>
+							<td><a class="btn btn-danger btn-sm" th:href="@{'/cuenta/eliminar/' + ${cuenta.id}}" th:text="'Eliminar'" 
+							onclick="return confirm('Esta seguro que desea eliminar la cuenta?');"> </a></td>
+							
+						</tr>
+					</tbody>
+
+				</table>
+
+			</div>
+		</div>
+
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
